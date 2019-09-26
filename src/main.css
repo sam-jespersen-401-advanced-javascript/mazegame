@@ -13,13 +13,11 @@ button {
     margin:auto;
     display:flex;
     flex-wrap:wrap;
-    width:480px;
-    height:480px;
+
+position:relative;
 }
 
 .sq {
-    height:30px;
-    width:30px;
     background-color:white;
     border-top: 1px solid black;
     border-left: 1px solid black;
@@ -29,11 +27,11 @@ button {
     margin:none;
 }
 
-.highlight {
+.active {
     background-color:hotpink;
 }
 
-.visited {
+.seen {
     background-color:pink;
 }
 
@@ -51,8 +49,10 @@ button {
 }
 
 .player{
-    background-color:green;
+    background-color:rgba(0, 128, 0, 0.534);
+    position: absolute;
+
 }
 .goal{
-    background-color:red;
+    background-color:rgba(255, 0, 0, 0.507);
 }
