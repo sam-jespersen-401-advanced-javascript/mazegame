@@ -1,116 +1,69 @@
-import Cell from './Cell.js'
-import Player from './Player.js'
-import Maze from './Maze.js'
-const container = document.getElementById('maze-container');
+import Player from './Player.js';
+import Maze from './Maze.js';
+const gameContainer = document.getElementById('game-container');
 const button = document.getElementById('button');
-const exitsButton = document.getElementById('exits');
+const playButton = document.getElementById('play');
+const playerContainer = document.getElementById('player-container');
 
 
-const maze = new Maze(15, 1024)
-maze.renderCells()
+//VARIABLES
+const sizeOfCellInPx = 20;
+const lengthOfEachSideOfMaze = 20;
 
-button.addEventListener('click', () => {
+const speed = 60;
+const startX = 0;
+const startY = 0;
 
-  let x = Math.floor(Math.random() * Math.sqrt(maze.cellCount));
-  let y = Math.floor(Math.random() * Math.sqrt(maze.cellCount));
-  const start = `${x}/${y}`;
-  maze.activeList.push(start)
-  maze.seenList.push(start)
-
-
-  maze.makeMaze();
-})
+newGame(sizeOfCellInPx, lengthOfEachSideOfMaze);
 
 
 
-// function makeExitMap() {
-//   let exitMap = {};
-//   for (let i = 1; i < 257; i++) {
-//     let elem = document.getElementById(i);
-//     let exits = [];
-//     if (elem.style.borderTop === 'none') {
-//       exits.push('top');
-//     }
-//     if (elem.style.borderBottom === 'none') {
-//       exits.push('bottom');
-//     }
-//     if (elem.style.borderLeft === 'none') {
-//       exits.push('left');
-//     }
-//     if (elem.style.borderRight === 'none') {
-//       exits.push('right');
-//     }
-//     let key = `e${i}`;
-//     exitMap[key] = exits;
-//   }
-//   return exitMap;
-// }
+//FUNCTIONS
+
+function newGame(cellSize, cellCount) {
+  const maze = new Maze(cellSize, cellCount);
+  const player = new Player(startX, startY, cellSize, cellCount, maze.cellList);
+
+  gameContainer.style.height = cellSize * cellCount;
+  gameContainer.style.width = cellSize * cellCount;
+
+  maze.renderCells();
+
+  button.addEventListener('click', () => {
+
+    let x = Math.floor(Math.random() * cellCount);
+    let y = Math.floor(Math.random() * cellCount);
+    const start = `${x}/${y}`;
+    maze.activeList.push(start);
+    maze.seenList.push(start);
+
+    maze.makeMaze(speed);
+
+  });
+
+  playButton.addEventListener('click', () => {
+    maze.makeExitMap();
+    playerContainer.appendChild(player.render());
+  });
 
 
 
-// let exits;
+  window.onkeydown = playerMove;
 
-// exitsButton.addEventListener('click', () => {
-//   exits = makeExitMap();
-//   document.getElementById(1).classList.add('player');
-//   document.getElementById(256).classList.add('goal');
+  function playerMove(e) {
+    if (e.key === 'ArrowUp') {
+      player.move('up');
+    }
+    if (e.key === 'ArrowDown') {
+      player.move('down');
+    }
+    if (e.key === 'ArrowRight') {
+      player.move('right');
+    }
+    if (e.key === 'ArrowLeft') {
+      player.move('left');
+    }
 
-// });
+  }
 
-// let playerPosition = 1;
-
-// document.onkeydown = playerMove;
-
-// function playerMove(e) {
-//   if (e.key === 'ArrowUp') {
-//     let move = -16;
-//     let index = `e${playerPosition}`;
-//     if (exits[index].indexOf('top') !== -1) {
-//       document.getElementById(playerPosition).classList.remove('player');
-//       document.getElementById(playerPosition + move).classList.add('player');
-
-//       playerPosition += move;
-//     }
-//   }
-//   else if (e.key === 'ArrowDown') {
-//     let move = 16;
-//     let index = `e${playerPosition}`;
-
-//     if (exits[index].indexOf('bottom') !== -1) {
-
-//       document.getElementById(playerPosition).classList.remove('player');
-//       document.getElementById(playerPosition + move).classList.add('player');
-
-//       playerPosition += move;
-//     }
-//   }
-//   else if (e.key === 'ArrowLeft') {
-//     let move = -1;
-//     let index = `e${playerPosition}`;
-
-//     if (exits[index].indexOf('left') !== -1) {
-
-//       document.getElementById(playerPosition).classList.remove('player');
-//       document.getElementById(playerPosition + move).classList.add('player');
-
-//       playerPosition += move;
-//     }
-//   }
-//   else if (e.key === 'ArrowRight') {
-//     let move = 1;
-//     let index = `e${playerPosition}`;
-
-//     if (exits[index].indexOf('right') !== -1) {
-
-//       document.getElementById(playerPosition).classList.remove('player');
-//       document.getElementById(playerPosition + move).classList.add('player');
-
-//       playerPosition += move;
-//     }
-//   }
-
-//   if (playerPosition === 256) {
-
-//   }
-
-// }
+}
