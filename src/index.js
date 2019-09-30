@@ -2,68 +2,72 @@ import Player from './Player.js';
 import Maze from './Maze.js';
 const gameContainer = document.getElementById('game-container');
 const button = document.getElementById('button');
-const playButton = document.getElementById('play');
 const playerContainer = document.getElementById('player-container');
+const numberInput = document.getElementById('number');
+const sizeInput = document.getElementById('size');
+const speedInput = document.getElementById('speed');
 
 
 //VARIABLES
-const sizeOfCellInPx = 20;
-const lengthOfEachSideOfMaze = 20;
+let sizeOfCellInPx;
+let lengthOfEachSideOfMaze;
+let speed;
+let maze;
+let player;
 
-const speed = 60;
 const startX = 0;
 const startY = 0;
 
-newGame(sizeOfCellInPx, lengthOfEachSideOfMaze);
 
 
+button.addEventListener('click', () => {
 
-//FUNCTIONS
+  sizeOfCellInPx = Number(sizeInput.value);
+  lengthOfEachSideOfMaze = Number(numberInput.value);
+  speed = Number(speedInput.value);
 
-function newGame(cellSize, cellCount) {
-  const maze = new Maze(cellSize, cellCount);
-  const player = new Player(startX, startY, cellSize, cellCount, maze.cellList);
+  gameContainer.style.height = sizeOfCellInPx * lengthOfEachSideOfMaze;
+  gameContainer.style.width = sizeOfCellInPx * lengthOfEachSideOfMaze;
 
-  gameContainer.style.height = cellSize * cellCount;
-  gameContainer.style.width = cellSize * cellCount;
-
+  maze = new Maze(sizeOfCellInPx, lengthOfEachSideOfMaze);
   maze.renderCells();
 
-  button.addEventListener('click', () => {
+  let x = Math.floor(Math.random() * lengthOfEachSideOfMaze);
+  let y = Math.floor(Math.random() * lengthOfEachSideOfMaze);
+  const start = `${x}/${y}`;
 
-    let x = Math.floor(Math.random() * cellCount);
-    let y = Math.floor(Math.random() * cellCount);
-    const start = `${x}/${y}`;
-    maze.activeList.push(start);
-    maze.seenList.push(start);
+  maze.activeList.push(start);
+  maze.seenList.push(start);
 
-    maze.makeMaze(speed);
-
+  const promise = new Promise((res, rej) => {
+    res(maze.renderMaze(speed));
   });
+  promise.then(() => {
+    console.log('promise resolved');
+    if(playerContainer.firstChild) {
+      playerContainer.removeChild(playerContainer.firstChild);
+    }
 
-  playButton.addEventListener('click', () => {
-    maze.makeExitMap();
+    player = new Player(startX, startY, sizeOfCellInPx, lengthOfEachSideOfMaze, maze.cellList);
     playerContainer.appendChild(player.render());
   });
-
 
 
   window.onkeydown = playerMove;
 
   function playerMove(e) {
-    if (e.key === 'ArrowUp') {
+    if(e.key === 'ArrowUp') {
       player.move('up');
     }
-    if (e.key === 'ArrowDown') {
+    if(e.key === 'ArrowDown') {
       player.move('down');
     }
-    if (e.key === 'ArrowRight') {
+    if(e.key === 'ArrowRight') {
       player.move('right');
     }
-    if (e.key === 'ArrowLeft') {
+    if(e.key === 'ArrowLeft') {
       player.move('left');
     }
 
   }
-
-}
+});

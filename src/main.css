@@ -5,7 +5,17 @@ button {
     width: 100px;
     margin-top: 20px;
 }
+#button-wrapper{
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    max-width:150px;
+}
 
+input{
+    width:100px;
+    margin-top: 20px;
+}
 #game-container{
     position:relative;
     left: 25%;

@@ -15,6 +15,14 @@ class Maze {
     const containerSize = this.cellSize * index;
     container.style.width = `${containerSize}px`;
     container.style.height = `${containerSize}px`;
+
+    if(container.firstChild) {
+      this.cellList = [];
+      while(container.firstChild) {
+        container.removeChild(container.firstChild);
+      }
+    }
+
     for(let i = 0; i < index; i++) {
       for(let t = 0; t < index; t++) {
         const cell = new Cell(t, i, this.cellSize);
@@ -24,10 +32,12 @@ class Maze {
     }
   }
 
-  makeMaze(speed) {
+  renderMaze(speed) {
+
     if(this.activeList.length > 0) {
 
       let count = 0;
+
       setTimeout(() => {
         while(count <= speed) {
 
@@ -58,9 +68,9 @@ class Maze {
 
         let remainder = this.cellList.length - this.seenList.length;
         if(remainder < speed) {
-          speed = remainder / 2;
+          speed = remainder;
         }
-        this.makeMaze(speed);
+        this.renderMaze(speed);
 
       }, 1);
     }
@@ -107,6 +117,8 @@ class Maze {
     this.cellList.forEach(cell => {
       cell.makeExits();
     });
+    console.log('map done');
+
 
   }
 

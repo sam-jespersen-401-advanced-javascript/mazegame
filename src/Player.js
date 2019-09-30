@@ -31,27 +31,29 @@ class Player {
   move(dir) {
     const player = document.getElementById('player');
     const cell = this.findCellById(this.pos);
-    const left = player.style.left.split('p')[0];
-    const top = player.style.top.split('p')[0];
+    console.log(cell);
+    const left = Number(player.style.left.split('p')[0]);
+    const top = Number(player.style.top.split('p')[0]);
 
-    if(dir === 'up' && cell.exits.indexOf('up') !== -1) {
-      player.style.top = `${+top - this.size}px`;
+    if (dir === 'up' && cell.exits.indexOf('up') !== -1) {
+      player.style.top = `${top - this.size}px`;
       this.y--;
     }
-    if(dir === 'down' && cell.exits.indexOf('down') !== -1) {
-      player.style.top = `${+top + this.size}px`;
+    if (dir === 'down' && cell.exits.indexOf('down') !== -1) {
+      player.style.top = `${top + this.size}px`;
       this.y++;
     }
-    if(dir === 'right' && cell.exits.indexOf('right') !== -1) {
-      player.style.left = `${+left + this.size}px`;
+    if (dir === 'right' && cell.exits.indexOf('right') !== -1) {
+      player.style.left = `${left + this.size}px`;
       this.x++;
     }
-    if(dir === 'left' && cell.exits.indexOf('left') !== -1) {
-      player.style.left = `${+left - this.size}px`;
+    if (dir === 'left' && cell.exits.indexOf('left') !== -1) {
+      player.style.left = `${left - this.size}px`;
       this.x--;
     }
     this.pos = `${this.x}/${this.y}`;
     console.log(player.style.left, player.style.top);
+    console.log(this.x, this.y);
 
   }
 

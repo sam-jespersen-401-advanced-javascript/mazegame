@@ -12,9 +12,15 @@
             <div id="maze-container"></div>
             <div id="player-container"></div>
         </div>
-        
-        <button id="button">Make Maze</button>
-        <button id="play">Play</button>
+        <div id="button-wrapper">
+            <button id="button">Make Maze</button>
+            <input type="number" id='number' value=10>
+            Length of each side of maze, in squares
+            <input type="number" id='size' value= 20>
+            Length of side of squares, in pixels
+            <input type="number" id='speed' value= 1>
+            Speed at which maze loads
+        </div>
         <script src='./src/index.js' type='module'></script>
     </body>
 </html>
